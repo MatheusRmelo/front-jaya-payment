@@ -1,0 +1,23 @@
+.root {
+    background: white;
+
+    margin: 16px;
+    height: calc(100vh - 42px);
+    padding: 64px;
+    border-radius: 16px;
+}
+
+@media (max-width: 767px) {
+    .root {
+        height: auto;
+        padding: 16px;
+        margin: 8px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .root {
+        padding: 16px;
+        margin: 8px;
+    }
+}

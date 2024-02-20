@@ -1,0 +1,39 @@
+.checkout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 24px;
+}
+
+.checkout .forms {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    gap: 64px;
+
+}
+
+.checkout .forms .form {
+    flex: 1;
+    box-shadow: 1px 0px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    padding: 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+    .checkout .forms {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1200px) {
+    .checkout .forms {
+        gap: 16px;
+    }
+}

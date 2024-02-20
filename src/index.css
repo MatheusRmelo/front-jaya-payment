@@ -1,0 +1,13 @@
+:root {
+    --primary-color: #5a945a;
+    --primary-color-hover: #568556;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    background: #F0F2F5;
+}

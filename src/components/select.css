@@ -1,0 +1,15 @@
+select {
+    height: 40px;
+    border-radius: 8px;
+    outline: none;
+    border: 1px solid #c4c4c4;
+    padding: 8px;
+
+    width: 100%;
+    max-width: 450px;
+    margin: 8px 0px;
+}
+
+select:focus {
+    border: 1px solid #5a945a;
+}
