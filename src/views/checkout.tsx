@@ -8,10 +8,16 @@ import './checkout.css';
 import { useEffect, useState } from 'react';
 import { Installments } from '@mercadopago/sdk-react/coreMethods/getInstallments/types';
 import { IdentificationType } from '@mercadopago/sdk-react/coreMethods/getIdentificationTypes/types';
+import Loading from '../components/loading';
+import { useClientAPI, useInternalRoutes } from '../utils/hooks';
+import { useNavigate } from 'react-router-dom';
 
 initMercadoPago('TEST-a3ac2850-b7e1-443f-be77-e03b0e8ee3cf', { locale: 'pt-BR' });
 
 export default function Checkout() {
+    const clientAPI = useClientAPI();
+    const navigate = useNavigate();
+    const internalRoutes = useInternalRoutes();
     const [cardNumber, setCardNumber] = useState('');
     const [cardholderName, setCardholderName] = useState('');
     const [cardExpirationMonth, setCardExpirationMonth] = useState('');
@@ -22,6 +28,7 @@ export default function Checkout() {
     const [typeDocument, setTypeDocument] = useState('');
     const [identificationTypes, setIdentificationTypes] = useState<IdentificationType[] | undefined>();
     const [cardInstallment, setCardInstallment] = useState<Installments | undefined>();
+    const [activeInstallment, setActiveInstallment] = useState('');
     const [loadingInstallments, setLoadingInstallments] = useState(false);
     const [loading, setLoading] = useState(false);
     const amount = 15;
@@ -74,13 +81,31 @@ export default function Checkout() {
             identificationNumber: document,
             identificationType: typeDocument
         });
-        console.log(response);
+        if (response) {
+            var result = await clientAPI.savePayment({
+                installments: cardInstallment!.payer_costs[parseInt(activeInstallment) - 1].installments!,
+                payment_method_id: cardInstallment!.payment_method_id,
+                status: 'PENDING',
+                token: response.id,
+                transaction_amount: cardInstallment!.payer_costs[parseInt(activeInstallment) - 1].total_amount,
+                payer: {
+                    email,
+                    identification: {
+                        number: document,
+                        type: typeDocument
+                    }
+                }
+            });
+            if (result.success) {
+                navigate(internalRoutes.payment);
+            }
+        }
     }
 
     return (
         <div className="checkout">
             {
-                loading ? <div>Carregando...</div>
+                loading ? <Loading />
                     :
                     <>
                         <div className="forms">
@@ -89,6 +114,7 @@ export default function Checkout() {
                                 <Input value={email} onChanged={setEmail} placeholder='E-mail do pagador' type='email' />
                                 <Select
                                     value={typeDocument}
+                                    placeholder='Selecione o tipo do documento'
                                     onChanged={setTypeDocument}
                                     options={identificationTypes == null ? [] : identificationTypes.map((type) => ({ key: type.id, value: type.name }))}
                                 />
@@ -104,6 +130,8 @@ export default function Checkout() {
                                 <Input value={securityCode} onChanged={setSecurityCode} placeholder='CVV' type='number' />
                                 <Select
                                     placeholder='Selecione o número de parcelas'
+                                    value={activeInstallment}
+                                    onChanged={setActiveInstallment}
                                     options={
                                         cardInstallment == null ? [] :
                                             cardInstallment!.payer_costs.map<Option>((value) => ({ key: value.installments.toString(), value: value.recommended_message }))

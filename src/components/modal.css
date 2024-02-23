@@ -1,0 +1,33 @@
+.overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+}
+
+.modal h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.modal .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+
+    margin-top: 32px;
+}

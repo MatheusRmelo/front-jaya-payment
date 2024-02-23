@@ -7,13 +7,20 @@ import {
 import Root from './routes/root';
 import Checkout from './views/checkout';
 import './index.css';
+import Payments from './views/payments';
+import { useInternalRoutes } from './utils/hooks';
+
+const internalRoutes = useInternalRoutes();
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: internalRoutes.payment,
+    element: <Payments />,
+  },
+  {
+    path: internalRoutes.checkout,
     element: <Checkout />,
-
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
