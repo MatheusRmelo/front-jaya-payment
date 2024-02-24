@@ -10,8 +10,9 @@ interface Props {
     loading?: boolean,
     onConfirm?: () => void,
     style?: 'danger' | 'normal',
+    confirmText?: string
 }
-export default function Modal({ style = 'normal', title, description, loading = false, visible, setVisible, onConfirm }: Props) {
+export default function Modal({ style = 'normal', title, description, loading = false, confirmText = 'Confirmar', visible, setVisible, onConfirm }: Props) {
     const modalRef = useRef<any>(null);
 
     return (
@@ -33,7 +34,7 @@ export default function Modal({ style = 'normal', title, description, loading = 
                         <p>{description}</p>
                         <div className="actions">
                             <Button style={style} variant="outline" text="Voltar" onClick={() => { setVisible(false); }} />
-                            <Button style={style} loading={loading} text={'Confirmar'} onClick={onConfirm} />
+                            <Button style={style} loading={loading} text={confirmText} onClick={onConfirm} />
                         </div>
                     </div>
                 </div>

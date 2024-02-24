@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/button';
 import Loading from '../components/loading';
 import Modal from '../components/modal';
+import Table from '../components/Table';
 
 export default function Payments() {
     const clientAPI = useClientAPI();
@@ -77,6 +78,7 @@ export default function Payments() {
                 visible={showConfirmPayment && activePayment != -1} setVisible={setShowConfirmPayment}
                 onConfirm={handleClickConfirmPayment}
                 loading={loadingModal}
+                confirmText='Confirmar pagamento'
             />
             <Modal
                 title='Deseja cancelar o pagamento?'
@@ -85,57 +87,44 @@ export default function Payments() {
                 loading={loadingModal}
                 onConfirm={handleClickCancelPayment}
                 style='danger'
+                confirmText='Cancelar pagamento'
             />
             <div className='payment-header'>
                 <h1>Pagamentos</h1>
                 <Button width='300px' text='Novo pagamento' onClick={handleClickNewPayment} />
             </div>
-            <div className="tbl-header">
-                <table cellPadding={0} cellSpacing={0} border={0}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Preço</th>
-                            <th>Parcelas</th>
-                            <th>Token</th>
-                            <th>Metódo de pagamento</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div className="tbl-content">
+            <Table >
+                <tr>
+                    <th>ID</th>
+                    <th>Preço</th>
+                    <th>Parcelas</th>
+                    <th>Metódo de pagamento</th>
+                    <th>Status</th>
+                    <th className='action' style={{ textAlign: 'center' }}>Ações</th>
+                </tr>
                 {
-                    loading ? <Loading /> : <table cellPadding={0} cellSpacing={0} border={0}>
-                        <tbody>
-                            {
-                                payments.map((payment, index) => (
-                                    <tr key={payment.id}>
-                                        <td>{payment.id}</td>
-                                        <td style={{ fontSize: 16 }}>{payment.transaction_amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
-                                        <td>{payment.installments}</td>
-                                        <td>{payment.token}</td>
-                                        <td>{payment.payment_method_id}</td>
-                                        <td style={{ fontSize: 16 }}>{payment.status == 'PAID' ? 'PAGO' : payment.status == 'CANCELED' ? 'CANCELADO' : 'PENDENTE'}</td>
-                                        <td className='action-column'>
-                                            {
-                                                payment.status != 'PAID' &&
-                                                <Button text='Confirmar pagamento' variant='outline' onClick={() => { handleClickActionPayment(index, false) }} />
-                                            }
-                                            {
-                                                payment.status != 'CANCELED' &&
-                                                <Button text='Cancelar pagamento' style='danger' onClick={() => { handleClickActionPayment(index, true); }} />
-                                            }
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
+                    payments.map((payment, index) => (
+                        <tr key={payment.id} className={index % 2 == 0 ? 'even' : ''}>
+                            <td>{payment.id}</td>
+                            <td style={{ fontSize: 16 }}>{payment.transaction_amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
+                            <td>{payment.installments}</td>
+                            <td>{payment.payment_method_id}</td>
+                            <td style={{ fontSize: 16 }}>{payment.status == 'PAID' ? 'PAGO' : payment.status == 'CANCELED' ? 'CANCELADO' : 'PENDENTE'}</td>
+                            <td className='action'>
+                                {
+                                    payment.status != 'PAID' &&
+                                    <Button text='Confirmar' height='40px' onClick={() => { handleClickActionPayment(index, false) }} />
+                                }
+                                {
+                                    payment.status != 'CANCELED' &&
+                                    <Button text='Cancelar' height='40px' style='danger' onClick={() => { handleClickActionPayment(index, true); }} />
+                                }
+                            </td>
+                        </tr>
+                    ))
                 }
+            </Table>
 
-            </div>
         </div>
     );
 }

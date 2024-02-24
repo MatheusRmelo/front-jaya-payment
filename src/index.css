@@ -3,11 +3,12 @@
     --primary-color-hover: #568556;
     --danger-color: #e25b5b;
     --danger-color-hover: #d18e8e;
+    --border-color: #E2E8F0;
 }
 
 * {
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
+    font-family: "Raleway", sans-serif;
 }
 
 body {
