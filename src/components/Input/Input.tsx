@@ -13,9 +13,11 @@ export default function Input({
     id,
     name,
     value,
-    onChanged = (value) => { }
+    onChanged
 }: Props) {
     return (
-        <input data-testid={id} placeholder={placeholder} name={name} id={id} type={type} value={value} onChange={(e) => onChanged(e.target.value)} />
+        <input data-testid={id} placeholder={placeholder} name={name} id={id} type={type} value={value}
+            onChange={(e) => onChanged == null ? null : onChanged(e.target.value)}
+        />
     );
 }
