@@ -1,4 +1,4 @@
-import './input.css';
+import './Input.css';
 interface Props {
     placeholder?: string,
     type?: React.HTMLInputTypeAttribute | undefined,
@@ -16,6 +16,6 @@ export default function Input({
     onChanged = (value) => { }
 }: Props) {
     return (
-        <input placeholder={placeholder} name={name} id={id} type={type} value={value} onChange={(e) => onChanged(e.target.value)} />
+        <input data-testid={id} placeholder={placeholder} name={name} id={id} type={type} value={value} onChange={(e) => onChanged(e.target.value)} />
     );
 }

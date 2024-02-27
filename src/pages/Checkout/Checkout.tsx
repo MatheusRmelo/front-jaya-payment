@@ -1,15 +1,16 @@
-import Button from '../components/button';
-import Input from '../components/input';
-import Select, { Option } from '../components/select';
+import './Checkout.css';
+
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import Select, { Option } from '../../components/Select/Select';
 import { getIdentificationTypes, getInstallments, initMercadoPago } from '@mercadopago/sdk-react';
 import { createCardToken } from '@mercadopago/sdk-react/coreMethods';
 
-import './checkout.css';
 import { useEffect, useState } from 'react';
 import { Installments } from '@mercadopago/sdk-react/coreMethods/getInstallments/types';
 import { IdentificationType } from '@mercadopago/sdk-react/coreMethods/getIdentificationTypes/types';
-import Loading from '../components/loading';
-import { useClientAPI, useInternalRoutes } from '../utils/hooks';
+import Loading from '../../components/Loading/Loading';
+import { useClientAPI, useInternalRoutes } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
 
 initMercadoPago('TEST-a3ac2850-b7e1-443f-be77-e03b0e8ee3cf', { locale: 'pt-BR' });
@@ -29,30 +30,31 @@ export default function Checkout() {
     const [identificationTypes, setIdentificationTypes] = useState<IdentificationType[] | undefined>();
     const [cardInstallment, setCardInstallment] = useState<Installments | undefined>();
     const [activeInstallment, setActiveInstallment] = useState('');
-    const [loadingInstallments, setLoadingInstallments] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const amount = 15;
+    const [error, setError] = useState(null);
+    const [amount, setAmount] = useState('15');
+    const [isLoadingInstallments, setIsLoadingInstallments] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
-        init();
+        getIdentificationTypesByMercadoPago();
     }, []);
 
     useEffect(() => {
-        if (cardNumber.length > 5 && !loadingInstallments) {
+        if (cardNumber.length > 5 && !isLoadingInstallments) {
             getInstallmentsByCard();
         }
     }, [cardNumber]);
 
-    const init = async () => {
-        setLoading(true);
+    const getIdentificationTypesByMercadoPago = async () => {
+        setIsLoading(true);
         setIdentificationTypes(await getIdentificationTypes());
-        setLoading(false);
+        setIsLoading(false);
     }
 
     const getInstallmentsByCard = async () => {
         try {
-            setLoadingInstallments(true);
+            setIsLoadingInstallments(true);
             const installments = await getInstallments({
                 amount: amount.toString(),
                 bin: cardNumber
@@ -61,12 +63,10 @@ export default function Checkout() {
             if (installments && installments.length > 0) {
                 setCardInstallment(installments![0]);
             }
-        } catch (err) {
-            console.log('------------');
-            console.log(err);
-            console.log('------------');
+        } catch (err: any) {
+            setError(err.toString());
         } finally {
-            setLoadingInstallments(false);
+            setIsLoadingInstallments(false);
         }
 
     }
@@ -96,7 +96,7 @@ export default function Checkout() {
                     }
                 }
             });
-            if (result.success) {
+            if (result.ok) {
                 navigate(internalRoutes.payment);
             }
         }
@@ -105,13 +105,13 @@ export default function Checkout() {
     return (
         <div className="checkout">
             {
-                loading ? <Loading />
+                isLoading ? <Loading />
                     :
                     <>
                         <div className="forms">
                             <div className="form">
                                 <h3>Dados do pagador</h3>
-                                <Input value={email} onChanged={setEmail} placeholder='E-mail do pagador' type='email' />
+                                <Input id='email' value={email} onChanged={setEmail} placeholder='E-mail do pagador' type='email' />
                                 <Select
                                     value={typeDocument}
                                     placeholder='Selecione o tipo do documento'
@@ -122,7 +122,7 @@ export default function Checkout() {
                             </div>
                             <div className="form">
                                 <h3>Dados do pagamento</h3>
-                                <Input value={amount.toString()} placeholder='Valor do pagamento' type='tel' />
+                                <Input value={amount} onChanged={setAmount} placeholder='Valor do pagamento' type='tel' />
                                 <Input value={cardNumber} onChanged={setCardNumber} placeholder='Número do cartão' type='number' />
                                 <Input value={cardholderName} onChanged={setCardholderName} placeholder='Nome do títular' type='text' />
                                 <Input value={cardExpirationMonth} onChanged={setCardExpirationMonth} placeholder='Mês de expiração (MM)' type='tel' />

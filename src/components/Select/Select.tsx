@@ -1,4 +1,4 @@
-import './select.css';
+import './Select.css';
 interface Props {
     options: Option[],
     placeholder?: string,

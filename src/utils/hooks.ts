@@ -1,11 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { Payment } from "../interfaces/payment";
-
-interface APIResponse<T> {
-    message: string,
-    result: T | null,
-    success: boolean
-}
+import { APIResponse } from "../interfaces/api-response";
 
 function useClientAPI() {
     const client: AxiosInstance = axios.create({
@@ -17,13 +12,13 @@ function useClientAPI() {
             var result = await client.get('payments');
             return {
                 message: result.data.message,
-                success: true,
+                ok: true,
                 result: result.data.result
             };
         } catch (err: any) {
             return {
                 message: err.toString(),
-                success: false,
+                ok: false,
                 result: null
             };
         }
@@ -34,13 +29,13 @@ function useClientAPI() {
             var result = await client.post('payments', payment);
             return {
                 message: result.data.message,
-                success: true,
+                ok: true,
                 result: result.data.result
             };
         } catch (err: any) {
             return {
                 message: err.toString(),
-                success: false,
+                ok: false,
                 result: null
             };
         }
@@ -51,13 +46,13 @@ function useClientAPI() {
             await client.patch(`payments/${id}`, { 'status': 'PAID' });
             return {
                 message: "Sucesso",
-                success: true,
+                ok: true,
                 result: true
             };
         } catch (err: any) {
             return {
                 message: err.toString(),
-                success: false,
+                ok: false,
                 result: null
             };
         }
@@ -70,13 +65,13 @@ function useClientAPI() {
             await client.delete(`payments/${id}`);
             return {
                 message: "Sucesso",
-                success: true,
+                ok: true,
                 result: true
             };
         } catch (err: any) {
             return {
                 message: err.toString(),
-                success: false,
+                ok: false,
                 result: null
             };
         }

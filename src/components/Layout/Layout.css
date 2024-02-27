@@ -1,4 +1,4 @@
-.root {
+.layout {
     background: white;
 
     margin: 16px;
@@ -8,7 +8,7 @@
 }
 
 @media (max-width: 767px) {
-    .root {
+    .layout {
         height: auto;
         padding: 16px;
         margin: 8px;
@@ -16,7 +16,7 @@
 }
 
 @media (max-width: 1200px) {
-    .root {
+    .layout {
         padding: 16px;
         margin: 8px;
     }

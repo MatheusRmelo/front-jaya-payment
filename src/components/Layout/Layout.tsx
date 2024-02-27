@@ -1,11 +1,11 @@
-import './root.css';
+import './Layout.css';
 
 interface Props {
     children: React.ReactNode
 }
-export default function Root({ children }: Props) {
+export default function Layout({ children }: Props) {
     return (
-        <div className="root">
+        <div className="layout">
             {children}
         </div>
     );

@@ -4,14 +4,13 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
-import Root from './routes/root';
-import Checkout from './views/checkout';
+import Checkout from './pages/Checkout/Checkout';
 import './index.css';
-import Payments from './views/payments';
+import Payments from './pages/Payments/Payments';
 import { useInternalRoutes } from './utils/hooks';
+import Layout from './components/Layout/Layout';
 
 const internalRoutes = useInternalRoutes();
-
 const router = createBrowserRouter([
   {
     path: internalRoutes.payment,
@@ -24,9 +23,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Root>
-      <RouterProvider router={router} />
-    </Root>
-  </React.StrictMode>,
+  <Layout>
+    <RouterProvider router={router} />
+  </Layout>
 )

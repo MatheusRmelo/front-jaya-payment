@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import './modal.css';
-import Button from "./button";
+import './Modal.css';
+import Button from "../Button/Button";
 
 interface Props {
     title: string,
