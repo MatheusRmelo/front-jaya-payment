@@ -7,7 +7,7 @@ interface Props {
     height?: string,
     variant?: 'outline' | 'solid',
     style?: 'danger' | 'normal',
-    loading?: boolean
+    loading?: boolean,
 }
 
 export default function Button({ loading = false, style = 'normal', variant = 'solid', width = '100%', height = '48px', text, onClick }: Props) {

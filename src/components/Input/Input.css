@@ -1,3 +1,11 @@
+.input-container {
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
 input {
     height: 40px;
     border-radius: 8px;
@@ -7,9 +15,27 @@ input {
 
     width: 100%;
     max-width: 450px;
-    margin: 8px 0px;
 }
 
 input:focus {
     border: 1px solid var(--primary-color);
+}
+
+input.error {
+    border: 1px solid var(--danger-color);
+    color: black;
+}
+
+.input-container>.error-container {
+    display: flex;
+    margin-left: 4px;
+    justify-content: flex-start;
+    margin: 8px 0px;
+}
+
+.input-container>.error-container>.error {
+    color: var(--danger-color);
+    font-size: 12px;
+    font-weight: bold;
+    width: auto;
 }
